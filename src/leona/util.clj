@@ -1,7 +1,8 @@
 (ns leona.util
   (:require [camel-snake-kebab.core :as csk]
             [clojure.spec.alpha :as s]
-            [clojure.string :as str]))
+            [clojure.string :as str])
+  (:import (java.util.regex Pattern)))
 
 (defn replace-punctuation
   [s]
@@ -16,7 +17,7 @@
       (str/replace #"_XMARK_" "!")))
 
 (defn- split-keep-delim
-  [s re-delim]
+  [^String s ^Pattern re-delim]
   (let [m (.matcher re-delim s)]
     ((fn step [last-end]
        (if (.find m)
