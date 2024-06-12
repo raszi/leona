@@ -1,14 +1,12 @@
 (ns leona.core
   (:refer-clojure :exclude [compile])
-  (:require [camel-snake-kebab.core :as csk]
-            [camel-snake-kebab.extras :as cske]
+  (:require [camel-snake-kebab.extras :as cske]
             [clojure.spec.alpha :as s]
             [clojure.string :as str]
             [clojure.walk :as walk]
             [com.walmartlabs.lacinia :as lacinia]
             [com.walmartlabs.lacinia.resolve :as lacinia-resolve]
             [com.walmartlabs.lacinia.schema :as lacinia-schema]
-            [com.walmartlabs.lacinia.util :as lacinia-util]
             [leona.schema :as leona-schema]
             [leona.util :as util]))
 
