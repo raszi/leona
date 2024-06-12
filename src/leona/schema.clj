@@ -1,13 +1,12 @@
 (ns leona.schema
   (:refer-clojure :exclude [list])
-  (:require [clojure.spec.alpha :as s]
-            [clojure.set :as set]
+  (:require [clojure.set :as set]
+            [clojure.spec.alpha :as s]
             [clojure.walk :as walk]
             [leona.util :as util]
             [spec-tools.core :as st]
             [spec-tools.impl :as impl]
             [spec-tools.visitor :as visitor]))
-
 
 (def valid-type-override-syms
   "These symbols can be used to wrap types when using `st/spec`, e.g. `(st/spec my-date-pred? {:type '(custom :date)})`. They only exist separately to provide semantic information - it's not asserted anywhere that the types they reference ever exist anywhere so USE WITH CAUTION."
@@ -357,7 +356,7 @@
                                               :spec spec}))}
                        (when enums
                          {:enums enums})))
-      (throw (Exception. (str "Cannot process anonymous `s/keys` specs. Please provide a name: " spec) )))))
+      (throw (Exception. (str "Cannot process anonymous `s/keys` specs. Please provide a name: " spec))))))
 
 (defmethod accept-spec 'clojure.spec.alpha/or [_ spec children _]
   (if-let [t (some #(when (not= ::invalid %) %) children)]
@@ -470,7 +469,6 @@
       (when spec ::invalid))
     (catch Exception _
       (when spec ::invalid))))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

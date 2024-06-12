@@ -107,7 +107,6 @@
 (def clj-name->qualified-gql-enum-name
   (partial clj-name->qualified-gql-name-impl SCREAMING_SNAKE_CASE))
 
-
 (defn gql-name->clj-name
   [t]
   (-> t
@@ -122,11 +121,11 @@
   "In this fn we attempt to contains? k on m (map or set), but we spin through some cases and return the one that fits"
   ([m t] ;; this is simply necessary to keep csk loaded
    (find-case-match
-     m t [csk/->camelCase
-          csk/->PascalCase
-          csk/->SCREAMING_SNAKE_CASE
-          csk/->snake_case
-          csk/->kebab-case]))
+    m t [csk/->camelCase
+         csk/->PascalCase
+         csk/->SCREAMING_SNAKE_CASE
+         csk/->snake_case
+         csk/->kebab-case]))
   ([m t fns]
    (when-let [case-fn (first fns)]
      (let [s (if (str/starts-with? (str t) ":")

@@ -222,7 +222,6 @@
                                        {:test_query {:input {:num 1, :nums [2 3]}}} {})]
     (is (= 6 (get-in result [:data :test :num])))))
 
-
 ;;;;;
 
 (deftest input-objects-nested-list
@@ -241,8 +240,6 @@
                             (leona/compile))
         result          (leona/execute compiled-schema "query test($inputs: [InputInput!]!) { test(inputs: $inputs) { num }}" {:inputs [{:num 1, :nums [2 3]}]} {})]
     (is (= 6 (get-in result [:data :test :num])))))
-
-
 
 ;;;;;
 
@@ -375,7 +372,6 @@
               (leona/compile))]
     (is (= identity (get-in r [:generated :queries :alice :resolve])))))
 
-
 ;;;;;;;
 
 (deftest add-alias-basic-test
@@ -462,9 +458,9 @@
   (s/def ::result string?)
   (s/def ::my-query (s/keys :req-un [::result]))
   (let [my-query-resolver (fn [ctx args value] {:result "hello"})
-        schema(-> (leona/create)
-                  (leona/attach-query ::no-args ::my-query my-query-resolver)
-                  (leona/compile))
+        schema (-> (leona/create)
+                   (leona/attach-query ::no-args ::my-query my-query-resolver)
+                   (leona/compile))
         r (leona/execute schema "{ myQuery { result } }")]
     (is (= "hello"  (get-in r [:data :myQuery :result])))))
 

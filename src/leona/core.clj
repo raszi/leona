@@ -66,18 +66,18 @@
 (defn format-enums
   [f m spec]
   (reduce
-    (fn [a spec-key]
-      (let [s (enum-spec->values spec-key)
-            v (util/get* m spec-key)
-            k (and v (if (contains? m spec-key)
-                       spec-key
-                       (util/remove-ns* spec-key)))]
-        (if (and s v)
-          (let [new-v (if (sequential? v)
-                        (mapv #(f s %) v)
-                        (f s v))]
-            (assoc a k new-v))
-          a))) m (util/spec-keys spec)))
+   (fn [a spec-key]
+     (let [s (enum-spec->values spec-key)
+           v (util/get* m spec-key)
+           k (and v (if (contains? m spec-key)
+                      spec-key
+                      (util/remove-ns* spec-key)))]
+       (if (and s v)
+         (let [new-v (if (sequential? v)
+                       (mapv #(f s %) v)
+                       (f s v))]
+           (assoc a k new-v))
+         a))) m (util/spec-keys spec)))
 
 (def format-input-enums
   "Format enum values in the input."
@@ -240,12 +240,12 @@
   "Walks a set of objects, attempting to inject field resolvers into certain types"
   [m frs]
   (update
-    m :objects
-    #(walk/postwalk
-       (fn [d]
-         (if (s/valid? ::field-with-type d)
-           (reduce-kv (fn [a k _] (inject-field-resolver a k frs)) d d)
-           d)) %)))
+   m :objects
+   #(walk/postwalk
+     (fn [d]
+       (if (s/valid? ::field-with-type d)
+         (reduce-kv (fn [a k _] (inject-field-resolver a k frs)) d d)
+         d)) %)))
 
 (defn add-external-schemas
   [generated schemas]
@@ -288,21 +288,21 @@
   "Given a map and map of input objects, replaces instances of input-object types with their transformed form"
   [m input-objects]
   (walk/postwalk
-    (fn replace-input-object-types [d]
-      (if (and (map? d)
-               (contains? d :type))
-        (if (keyword? (:type d))
-          (if (some #(= (:type d) %) (keys input-objects))
-            (update d :type transform-input-object-key)
-            d)
-          (walk/postwalk
-            (fn replace-matched-type [n] ;; {:type ;..... }
-              (if (some #(= n %) (keys input-objects))
-                (transform-input-object-key n)
-                n))
-            d))
-        d))
-    m))
+   (fn replace-input-object-types [d]
+     (if (and (map? d)
+              (contains? d :type))
+       (if (keyword? (:type d))
+         (if (some #(= (:type d) %) (keys input-objects))
+           (update d :type transform-input-object-key)
+           d)
+         (walk/postwalk
+          (fn replace-matched-type [n] ;; {:type ;..... }
+            (if (some #(= n %) (keys input-objects))
+              (transform-input-object-key n)
+              n))
+          d))
+       d))
+   m))
 
 (defn inject-custom-scalars
   "Add custom scalars to the Lacinia schema"
@@ -326,20 +326,20 @@
         field-resolvers (not-empty (:field-resolvers m))
         custom-scalars  (not-empty (:custom-scalars m))]
     (cond-> (apply leona-schema/combine-with-opts opts (:specs m))
-            queries         (assoc :queries (-> queries
-                                                (dissoc-all :enums)
-                                                (dissoc-all :input-objects)
+      queries         (assoc :queries (-> queries
+                                          (dissoc-all :enums)
+                                          (dissoc-all :input-objects)
+                                          (replace-input-objects input-objects)))
+      mutations       (assoc :mutations (-> mutations
+                                            (dissoc-all :enums)
+                                            (dissoc-all :input-objects)
+                                            (replace-input-objects input-objects)))
+      input-objects   (assoc :input-objects (-> input-objects
+                                                (transform-input-object-keys)
                                                 (replace-input-objects input-objects)))
-            mutations       (assoc :mutations (-> mutations
-                                                  (dissoc-all :enums)
-                                                  (dissoc-all :input-objects)
-                                                  (replace-input-objects input-objects)))
-            input-objects   (assoc :input-objects (-> input-objects
-                                                      (transform-input-object-keys)
-                                                      (replace-input-objects input-objects)))
-            enums           (update :enums merge enums)
-            field-resolvers (inject-field-resolvers field-resolvers)
-            custom-scalars  (inject-custom-scalars custom-scalars))))
+      enums           (update :enums merge enums)
+      field-resolvers (inject-field-resolvers field-resolvers)
+      custom-scalars  (inject-custom-scalars custom-scalars))))
 
 (defn compile
   "Generates a Lacinia schema from pre-compiled data structure and compiles it.
