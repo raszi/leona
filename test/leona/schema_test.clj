@@ -1,11 +1,10 @@
 (ns leona.schema-test
-  (:require  [clojure.spec.alpha :as s]
-             [clojure.test :refer :all]
-             [leona.core :as leona]
-             [leona.schema :as schema]
-             [leona.test-spec :as test]
-             [leona.util :as util]
-             [spec-tools.core :as st]))
+  (:require [clojure.spec.alpha :as s]
+            [clojure.test :refer :all]
+            [leona.schema :as schema]
+            [leona.test-spec :as test]
+            [leona.util :as util]
+            [spec-tools.core :as st]))
 
 (deftest fix-references-test
   (let [s {:objects {:Test {:fields {:b {:objects {:B {:fields {:a {:type '(non-null Int)}}}}},

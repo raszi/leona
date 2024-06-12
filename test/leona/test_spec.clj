@@ -1,6 +1,5 @@
 (ns leona.test-spec
-  (:require  [clojure.spec.alpha :as s]
-             [clojure.test :as t]))
+  (:require [clojure.spec.alpha :as s]))
 
 (s/def ::primary-functions (s/coll-of string?))
 (s/def ::home-planet string?)

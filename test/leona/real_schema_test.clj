@@ -1,10 +1,10 @@
 (ns leona.real-schema-test
-  (:require  [clojure.spec.alpha :as s]
-             [clojure.spec.gen.alpha :as gen]
-             [clojure.string :as str]
-             [clojure.test :refer :all]
-             [leona.core :as leona]
-             [leona.schema :as schema]))
+  (:require [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
+            [clojure.string :as str]
+            [clojure.test :refer :all]
+            [leona.core :as leona]
+            [leona.schema :as schema]))
 
 ;; Location
 (s/def :wh.location/street string?)

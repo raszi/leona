@@ -1,13 +1,12 @@
 (ns leona.custom-scalar-test
-  (:require  [clj-time.core :as t]
-             [clj-time.format :as tf]
-             [clj-time.types :as tt]
-             [clojure.spec.alpha :as s]
-             [clojure.string :as str]
-             [clojure.test :refer :all]
-             [leona.core :as leona]
-             [leona.schema :as leona-schema]
-             [spec-tools.core :as st]))
+  (:require [clj-time.core :as t]
+            [clj-time.format :as tf]
+            [clj-time.types :as tt]
+            [clojure.spec.alpha :as s]
+            [clojure.test :refer :all]
+            [leona.core :as leona]
+            [leona.schema :as leona-schema]
+            [spec-tools.core :as st]))
 
 (deftest custom-scalars-are-preserved-at-schema-time
   (s/def ::date tt/date-time?)
